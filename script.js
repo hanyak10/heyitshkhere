@@ -109,7 +109,7 @@ function renderFrame() {
     const s = visual[i];
     const t = targetState[i] || s;
 
-    const speed = reduceMotion ? 1 : .16;
+    const speed = reduceMotion ? 1 : .14;
     s.width = lerp(s.width, t.width, speed);
     s.y = lerp(s.y, t.y, speed);
     s.scale = lerp(s.scale, t.scale, speed);
@@ -126,10 +126,8 @@ function renderFrame() {
 
     card.style.width = `${s.width}%`;
     card.style.transform = `translate3d(0, ${s.y}px, 0) scale(${s.scale})`;
-const isActive = i === activeIndex;
-
-card.style.opacity = isActive ? '1' : `${s.opacity}`;
-card.style.filter = isActive ? 'none' : `blur(${s.blur}px)`;
+    card.style.opacity = `${s.opacity}`;
+    card.style.filter = `blur(${s.blur}px)`;
     card.style.borderRadius = `${s.radius}px`;
   });
 
@@ -143,13 +141,48 @@ card.style.filter = isActive ? 'none' : `blur(${s.blur}px)`;
   animationFrame = needsMore ? requestAnimationFrame(renderFrame) : 0;
 }
 
+
+/*
+ * Mobile card sizing:
+ * Keep the card itself content-height so iPhones do not show a huge empty
+ * interior, but give each wrapper a measured scroll runway so the existing
+ * cinematic card hand-off animation is preserved.
+ */
+function sizeMobileSectionRunways() {
+  const isMobile = window.innerWidth <= 600;
+  wraps.forEach((wrap) => {
+    const card = wrap.querySelector('.card');
+    if (!card) return;
+
+    if (!isMobile) {
+      wrap.style.height = '';
+      return;
+    }
+
+    const contentHeight = card.scrollHeight;
+
+    // The final Contact section has no following section to transition into.
+    // Give it no artificial runway, otherwise the card can finish underneath
+    // or too close to the footer on small iPhone viewports.
+    if (wrap.dataset.index === '6' || card.classList.contains('contact-card')) {
+      wrap.style.height = `${contentHeight}px`;
+      return;
+    }
+
+    const runway = Math.max(220, Math.min(window.innerHeight * 0.58, 430));
+    wrap.style.height = `${contentHeight + runway}px`;
+  });
+}
+
 function requestSceneUpdate() {
+  sizeMobileSectionRunways();
   computeTargets();
   if (!animationFrame) animationFrame = requestAnimationFrame(renderFrame);
 }
 
 window.addEventListener('scroll', requestSceneUpdate, {passive:true});
 window.addEventListener('resize', requestSceneUpdate);
+window.addEventListener('orientationchange', () => setTimeout(requestSceneUpdate, 80));
 
 function goToIndex(index) {
   if (index <= 0) {
@@ -180,5 +213,6 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
 });
 
 /* Initial render */
+sizeMobileSectionRunways();
 computeTargets();
 renderFrame();

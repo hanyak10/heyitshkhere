@@ -548,3 +548,1275 @@ main#site{
   background:rgba(255,255,255,.035) !important;
   text-shadow:0 0 8px rgba(255,255,255,.015);
 }
+
+/* =========================================================
+   V25 — Responsive mobile layout
+   Keeps desktop untouched and makes About / Experience /
+   Projects adapt fluidly across phone widths.
+   ========================================================= */
+
+:root{
+  --mobile-side: clamp(16px, 5vw, 28px);
+  --mobile-card-width: calc(100% - 24px);
+  --mobile-header: 64px;
+  --mobile-footer: 56px;
+}
+
+/* Tablet / small laptop: reduce density before the phone breakpoint. */
+@media (max-width: 1100px){
+  .about-card{
+    padding: clamp(34px, 5vw, 56px);
+    gap: clamp(18px, 3vw, 36px);
+  }
+
+  .about-copy h2,
+  .experience-card h2,
+  .projects-card h2{
+    font-size: clamp(2.8rem, 6vw, 5.2rem);
+  }
+
+  .experience-card{
+    padding: clamp(34px, 5vw, 58px);
+  }
+
+  .timeline{
+    max-width: 100%;
+  }
+
+  .projects-card{
+    padding: clamp(32px, 5vw, 58px);
+  }
+
+  .project-grid{
+    max-width: 100%;
+  }
+}
+
+/* Phones: stack content vertically and make each card fit the
+   actual usable viewport between the fixed header and footer. */
+@media (max-width: 900px){
+  html, body{
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .topbar{
+    height: var(--mobile-header);
+    padding: 0 var(--mobile-side);
+  }
+
+  .nav-links{
+    display: none;
+  }
+
+  .nav-actions{
+    gap: 7px;
+  }
+
+  .resume-link{
+    padding: 9px 12px;
+    font-size: .58rem;
+  }
+
+  .hero{
+    min-height: 100svh;
+    height: 100svh;
+    padding:
+      calc(var(--mobile-header) + 20px)
+      var(--mobile-side)
+      calc(var(--mobile-footer) + 24px);
+  }
+
+  .hero-grid{
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .hero h1{
+    font-size: clamp(3.25rem, 15vw, 5.6rem);
+    line-height: .86;
+    margin: 12px 0 22px;
+  }
+
+  .hero-text{
+    font-size: .9rem;
+    max-width: 620px;
+  }
+
+  .hero-orbit{
+    display: none;
+  }
+
+  /* Keep the card away from both fixed UI bars. */
+  .section-wrap{
+    height: 112svh;
+    min-height: 760px;
+  }
+
+  .card{
+    top: calc(var(--mobile-header) + 8px);
+    width: var(--mobile-card-width);
+    height: calc(
+      100svh -
+      var(--mobile-header) -
+      var(--mobile-footer) -
+      24px
+    );
+    min-height: 0;
+    max-height: calc(
+      100svh -
+      var(--mobile-header) -
+      var(--mobile-footer) -
+      24px
+    );
+    border-radius: 28px;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about-card{
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:stretch;
+    gap: 8px;
+    padding:
+      28px
+      24px
+      22px;
+    overflow:hidden;
+  }
+
+  .about-copy{
+    width:100%;
+    max-width:none;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .about-copy .section-kicker{
+    margin-bottom: 2px;
+  }
+
+  .about-copy h2{
+    font-size: clamp(2.25rem, 9.5vw, 4.25rem);
+    line-height: .91;
+    letter-spacing: -.065em;
+    margin: 9px 0 14px;
+    max-width: 100%;
+  }
+
+  .about-text{
+    max-width: 100%;
+    font-size: clamp(.78rem, 3.2vw, .95rem);
+    line-height: 1.48;
+  }
+
+  .about-links{
+    margin-top: 14px;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+
+  .contact-pill,
+  .icon-pill{
+    padding: 8px 10px;
+    font-size: .58rem;
+    border-radius: 10px;
+  }
+
+  /* Portrait becomes a contained lower visual rather than pushing
+     the text below the viewport. */
+  .about-photo{
+    width:100%;
+    height: min(34svh, 285px);
+    min-height: 170px;
+    flex: 0 0 auto;
+    order: 2;
+    align-self: center;
+    margin-top: auto;
+    overflow:hidden;
+    border-radius: 18px;
+  }
+
+  .about-photo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    object-position:center bottom;
+    mix-blend-mode:screen;
+    mask-image: linear-gradient(
+      to bottom,
+      black 82%,
+      transparent 100%
+    );
+  }
+
+  /* ---------- EXPERIENCE ---------- */
+  .experience-card{
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    padding:
+      28px
+      24px
+      22px;
+    overflow:hidden;
+  }
+
+  .experience-head{
+    width:100%;
+    max-width:none;
+    margin-bottom: 10px;
+  }
+
+  .experience-card h2{
+    font-size: clamp(2.35rem, 10vw, 4.4rem);
+    line-height:.9;
+    margin: 8px 0 12px;
+  }
+
+  .experience-head>div>p:last-child{
+    max-width:100%;
+    font-size:.76rem;
+    line-height:1.45;
+  }
+
+  .timeline{
+    width:100%;
+    max-width:none;
+    margin: 4px 0 0;
+    overflow:visible;
+  }
+
+  .timeline-item{
+    grid-template-columns: 76px 12px minmax(0,1fr);
+    column-gap: 10px;
+    padding: 15px 0;
+  }
+
+  .timeline-item:first-child .timeline-node:after{
+    left: 85px;
+    top: 27px;
+    bottom: -15px;
+  }
+
+  .time{
+    font-size:.56rem;
+    line-height:1.55;
+    word-break:normal;
+  }
+
+  .timeline-node{
+    width:8px;
+    height:8px;
+    margin-top:6px;
+  }
+
+  .timeline-item h3{
+    font-size: clamp(1rem, 4.5vw, 1.45rem);
+    line-height:1.08;
+  }
+
+  .timeline-item p{
+    margin-top:7px;
+    font-size:.68rem;
+    line-height:1.45;
+  }
+
+  .tags{
+    gap:5px;
+    margin-top:8px;
+  }
+
+  .tags span{
+    padding:5px 7px;
+    font-size:.48rem;
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .projects-card{
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    padding:
+      28px
+      24px
+      22px;
+    overflow:hidden;
+  }
+
+  .projects-card .section-head.compact{
+    width:100%;
+    margin-bottom: 17px;
+  }
+
+  .projects-card h2{
+    font-size: clamp(2.4rem, 10.5vw, 4.5rem);
+    line-height:.9;
+    margin: 8px 0 0;
+  }
+
+  .projects-card .section-head p:last-child{
+    font-size:.7rem;
+    line-height:1.4;
+    max-width:100%;
+    margin-top:7px;
+  }
+
+  .project-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:9px;
+    width:100%;
+    max-width:none;
+    margin:0;
+    overflow:visible;
+  }
+
+  .project{
+    min-height:0 !important;
+    height:auto;
+    padding:18px 17px;
+    border-radius:17px;
+  }
+
+  .project-top strong{
+    font-size:1.55rem;
+  }
+
+  .project-top span{
+    font-size:1rem;
+  }
+
+  .project-type{
+    font-size:.48rem;
+    margin-top:3px;
+  }
+
+  .project h3{
+    font-size: clamp(1.05rem, 4.4vw, 1.4rem);
+    line-height:1.05;
+    margin:8px 0;
+  }
+
+  .project>p:not(.project-type){
+    font-size:.63rem;
+    line-height:1.42;
+  }
+
+  .metrics{
+    grid-template-columns:repeat(4,1fr);
+    gap:5px;
+    margin-top:11px;
+    padding-top:10px;
+  }
+
+  .metrics strong{
+    font-size:.82rem;
+  }
+
+  .metrics span{
+    font-size:.39rem;
+    line-height:1.25;
+  }
+
+  .section-dots{
+    right:7px;
+    gap:7px;
+  }
+
+  .dot{
+    width:5px;
+    height:5px;
+  }
+
+  .dot.active{
+    width:7px;
+    height:15px;
+  }
+
+  .footer{
+    height:var(--mobile-footer);
+    padding:0 18px;
+    font-size:.48rem;
+    letter-spacing:.08em;
+  }
+}
+
+/* Narrow phones: make typography and spacing fluid instead of
+   introducing another hard layout breakpoint. */
+@media (max-width: 430px){
+  .card{
+    width: calc(100% - 16px);
+    border-radius:24px;
+  }
+
+  .about-card,
+  .experience-card,
+  .projects-card{
+    padding-left:18px;
+    padding-right:18px;
+  }
+
+  .about-copy h2{
+    font-size: clamp(2.05rem, 10.2vw, 3.4rem);
+  }
+
+  .about-text{
+    font-size:.72rem;
+  }
+
+  .about-photo{
+    height:min(31svh,230px);
+    min-height:145px;
+  }
+
+  .experience-card h2,
+  .projects-card h2{
+    font-size: clamp(2.15rem, 11vw, 3.55rem);
+  }
+
+  .experience-head>div>p:last-child{
+    font-size:.67rem;
+  }
+
+  .timeline-item{
+    grid-template-columns:64px 10px minmax(0,1fr);
+    column-gap:8px;
+    padding:12px 0;
+  }
+
+  .timeline-item:first-child .timeline-node:after{
+    left:72px;
+  }
+
+  .timeline-item h3{
+    font-size:1rem;
+  }
+
+  .timeline-item p{
+    font-size:.62rem;
+  }
+
+  .project{
+    padding:15px;
+  }
+
+  .project h3{
+    font-size:1.02rem;
+  }
+
+  .project>p:not(.project-type){
+    font-size:.59rem;
+  }
+
+  .metrics strong{
+    font-size:.72rem;
+  }
+
+  .metrics span{
+    font-size:.34rem;
+  }
+}
+
+/* Very narrow devices: allow the portrait to shrink further and
+   prevent long project text from overflowing horizontally. */
+@media (max-width: 360px){
+  .about-copy h2{
+    font-size:2rem;
+  }
+
+  .about-photo{
+    min-height:125px;
+    height:27svh;
+  }
+
+  .timeline-item{
+    grid-template-columns:58px 8px minmax(0,1fr);
+  }
+
+  .timeline-item:first-child .timeline-node:after{
+    left:65px;
+  }
+
+  .project-grid{
+    gap:7px;
+  }
+
+  .project{
+    padding:13px;
+  }
+}
+
+/* =========================================================
+   V26 — MOBILE CONTENT / CARD FIX
+   Desktop remains unchanged.
+   ========================================================= */
+
+@media (max-width: 900px){
+
+  html, body{
+    overflow-x:hidden;
+    width:100%;
+  }
+
+  /* The mobile page must be allowed to grow with its content.
+     Do NOT force every card into a viewport-sized clipping box. */
+  main#site{
+    width:100%;
+    overflow:visible;
+  }
+
+  .section-wrap{
+    height:auto !important;
+    min-height:calc(100svh - 64px);
+    padding:0 0 34px;
+    overflow:visible !important;
+  }
+
+  .section-wrap > .card,
+  .card{
+    position:relative !important;
+    top:auto !important;
+    left:auto !important;
+    right:auto !important;
+
+    width:calc(100% - 24px) !important;
+
+    height:auto !important;
+    min-height:calc(100svh - 64px - 56px - 24px);
+    max-height:none !important;
+
+    margin:0 auto !important;
+
+    overflow:visible !important;
+
+    box-sizing:border-box;
+    padding-bottom:34px;
+
+    border-radius:28px !important;
+  }
+
+  /* =======================================================
+     ABOUT
+     ======================================================= */
+
+  /* User requested NO portrait on mobile. */
+  .about-photo{
+    display:none !important;
+  }
+
+  .about-card{
+    display:block !important;
+    padding:30px 24px 42px !important;
+  }
+
+  .about-copy{
+    width:100% !important;
+    max-width:none !important;
+  }
+
+  .about-statement,
+  .about-copy h2{
+    font-size:clamp(2.35rem, 10.5vw, 4rem) !important;
+    line-height:.93 !important;
+    letter-spacing:-.065em !important;
+    max-width:100% !important;
+    margin:10px 0 17px !important;
+  }
+
+  .about-text{
+    width:100% !important;
+    max-width:none !important;
+    font-size:clamp(.76rem, 3.45vw, .95rem) !important;
+    line-height:1.5 !important;
+  }
+
+  .about-links{
+    width:100%;
+    display:flex !important;
+    flex-wrap:wrap !important;
+    gap:7px !important;
+    margin-top:20px !important;
+    padding-bottom:4px;
+  }
+
+  .contact-pill,
+  .icon-pill{
+    flex:0 0 auto;
+    white-space:nowrap;
+  }
+
+  /* =======================================================
+     EXPERIENCE
+     ======================================================= */
+
+  .experience-card{
+    display:block !important;
+    padding:30px 24px 42px !important;
+  }
+
+  .experience-head{
+    width:100% !important;
+    max-width:none !important;
+    margin-bottom:18px !important;
+  }
+
+  .experience-card h2{
+    font-size:clamp(2.45rem, 11vw, 4rem) !important;
+    line-height:.9 !important;
+    margin:9px 0 13px !important;
+  }
+
+  .experience-head > div > p:last-child{
+    width:100% !important;
+    max-width:none !important;
+    font-size:.76rem !important;
+    line-height:1.48 !important;
+  }
+
+  .timeline{
+    width:100% !important;
+    max-width:none !important;
+    margin:0 !important;
+  }
+
+  .timeline-item{
+    display:grid !important;
+    grid-template-columns:68px 10px minmax(0,1fr) !important;
+    column-gap:9px !important;
+    width:100% !important;
+    padding:17px 0 !important;
+    min-width:0 !important;
+  }
+
+  .timeline-item > *{
+    min-width:0 !important;
+  }
+
+  .time{
+    width:auto !important;
+    font-size:.53rem !important;
+    line-height:1.65 !important;
+    overflow-wrap:normal !important;
+  }
+
+  .timeline-node{
+    display:block !important;
+    width:8px !important;
+    height:8px !important;
+    margin-top:5px !important;
+  }
+
+  .timeline-item:first-child .timeline-node:after{
+    display:block !important;
+    left:72px !important;
+    top:27px !important;
+    bottom:-17px !important;
+  }
+
+  .timeline-item h3{
+    width:100% !important;
+    font-size:clamp(1rem, 4.5vw, 1.35rem) !important;
+    line-height:1.08 !important;
+    overflow-wrap:normal !important;
+  }
+
+  .timeline-item p{
+    width:100% !important;
+    max-width:none !important;
+    margin-top:7px !important;
+    font-size:.67rem !important;
+    line-height:1.48 !important;
+    overflow-wrap:break-word !important;
+  }
+
+  .tags{
+    width:100%;
+    display:flex !important;
+    flex-wrap:wrap !important;
+    gap:5px !important;
+  }
+
+  .tags span{
+    font-size:.47rem !important;
+    padding:5px 7px !important;
+  }
+
+  /* =======================================================
+     PROJECTS
+     ======================================================= */
+
+  .projects-card{
+    display:block !important;
+    padding:30px 24px 42px !important;
+  }
+
+  .projects-card .section-head.compact{
+    width:100% !important;
+    margin-bottom:19px !important;
+  }
+
+  .projects-card h2{
+    font-size:clamp(2.5rem, 11vw, 4rem) !important;
+    line-height:.9 !important;
+    margin:9px 0 0 !important;
+  }
+
+  .projects-card .section-head p:last-child{
+    width:100% !important;
+    max-width:none !important;
+    font-size:.7rem !important;
+    line-height:1.45 !important;
+  }
+
+  .project-grid{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    width:100% !important;
+    max-width:none !important;
+    gap:10px !important;
+    margin:0 !important;
+  }
+
+  .project{
+    width:100% !important;
+    min-height:0 !important;
+    height:auto !important;
+    padding:18px 16px !important;
+    border-radius:18px !important;
+  }
+
+  .project-top strong{
+    font-size:1.55rem !important;
+  }
+
+  .project h3{
+    font-size:clamp(1.05rem, 4.6vw, 1.35rem) !important;
+    line-height:1.06 !important;
+    margin:9px 0 !important;
+  }
+
+  .project > p:not(.project-type){
+    font-size:.62rem !important;
+    line-height:1.48 !important;
+    overflow-wrap:break-word !important;
+  }
+
+  .project-impact,
+  .metrics{
+    width:100% !important;
+    grid-template-columns:repeat(3,1fr) !important;
+    gap:7px !important;
+  }
+
+  .project:nth-child(2) .metrics{
+    grid-template-columns:repeat(2,1fr) !important;
+  }
+
+  .metrics strong{
+    font-size:.8rem !important;
+  }
+
+  .metrics span{
+    font-size:.37rem !important;
+  }
+
+  /* =======================================================
+     OTHER SECTIONS — same content-safe behavior
+     ======================================================= */
+
+  .skills-card,
+  .education-card,
+  .contact-card{
+    display:block !important;
+    padding:30px 24px 42px !important;
+  }
+
+  .skills-card h2,
+  .education-card h2,
+  .contact-card h2{
+    font-size:clamp(2.45rem, 11vw, 4rem) !important;
+    line-height:.9 !important;
+  }
+
+  .skills-copy{
+    width:100% !important;
+    max-width:none !important;
+  }
+
+  .skill-cloud{
+    width:100% !important;
+    margin-top:22px;
+    gap:7px !important;
+  }
+
+  .skill-cloud span{
+    font-size:.58rem !important;
+    padding:8px 10px !important;
+  }
+
+  .education-card{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:14px !important;
+  }
+
+  .education-block{
+    width:100% !important;
+    padding:20px !important;
+  }
+
+  .education-block h2{
+    font-size:clamp(1.8rem, 8vw, 3rem) !important;
+  }
+
+  .contact-card{
+    min-height:0 !important;
+  height:auto !important;
+  padding-bottom:28px !important;
+  }
+
+  /* Dots stay outside the content and never affect card width. */
+  .section-dots{
+    right:5px !important;
+    z-index:120 !important;
+  }
+
+  /* Footer remains fixed, but card content gets enough bottom room. */
+  .footer{
+    height:56px !important;
+  }
+}
+
+@media (max-width:430px){
+  .section-wrap{
+    padding-bottom:26px;
+  }
+
+  .section-wrap > .card,
+  .card{
+    width:calc(100% - 16px) !important;
+    border-radius:24px !important;
+    min-height:calc(100svh - 64px - 56px - 16px);
+  }
+
+  .about-card,
+  .experience-card,
+  .projects-card,
+  .skills-card,
+  .education-card,
+  .contact-card{
+    padding-left:18px !important;
+    padding-right:18px !important;
+  }
+
+  .about-statement,
+  .about-copy h2{
+    font-size:clamp(2.15rem, 10.4vw, 3.35rem) !important;
+  }
+
+  .timeline-item{
+    grid-template-columns:61px 9px minmax(0,1fr) !important;
+    column-gap:8px !important;
+  }
+
+  .timeline-item:first-child .timeline-node:after{
+    left:68px !important;
+  }
+
+  .timeline-item h3{
+    font-size:1rem !important;
+  }
+
+  .timeline-item p{
+    font-size:.61rem !important;
+  }
+
+  .project{
+    padding:15px !important;
+  }
+
+  .project > p:not(.project-type){
+    font-size:.59rem !important;
+  }
+}
+
+@media (max-width:360px){
+  .about-statement,
+  .about-copy h2,
+  .experience-card h2,
+  .projects-card h2,
+  .skills-card h2,
+  .education-card h2,
+  .contact-card h2{
+    font-size:2rem !important;
+  }
+
+  .timeline-item{
+    grid-template-columns:56px 8px minmax(0,1fr) !important;
+  }
+
+  .timeline-item:first-child .timeline-node:after{
+    left:63px !important;
+  }
+
+  .project-impact,
+  .metrics{
+    gap:4px !important;
+  }
+}
+@media (max-width: 900px) {
+  /* Contact is the final section, so don't reserve another viewport
+     of empty space between the card and the fixed footer. */
+  .section-wrap:has(.contact-card) {
+    min-height: 0 !important;
+    height: auto !important;
+    padding-bottom: 0 !important;
+  }
+
+  .contact-card {
+    min-height: 0 !important;
+    height: auto !important;
+    margin-bottom: 0 !important;
+  }
+}
+@media (max-width: 1024px) {
+  .section-wrap:has(.contact-card) {
+    min-height: 0 !important;
+    height: auto !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .contact-card {
+    position: relative !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 48px !important;
+    overflow: visible !important;
+  }
+
+  footer {
+    
+    z-index: 10 !important;
+  }
+}
+@media (min-width: 1025px) {
+  footer {
+    position: fixed;
+  }
+}
+@media (max-width: 1024px) {
+  .section-dots {
+    display: none !important;
+  }
+
+  .scroll-indicator {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+/* =========================================================
+   FINAL CONTACT / FOOTER FIX
+   Mobile + tablet only.
+   Desktop remains exactly as designed.
+
+   IMPORTANT:
+   The footer is a normal-flow element below the final section
+   on non-desktop screens. The Contact card therefore cannot
+   disappear underneath it.
+   ========================================================= */
+
+@media (max-width: 1024px) {
+
+  /* ---------- FOOTER ---------- */
+  .footer,
+  footer.footer {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    inset: auto !important;
+
+    width: 100% !important;
+    height: 56px !important;
+    min-height: 56px !important;
+
+    margin: 0 !important;
+    transform: none !important;
+
+    z-index: 200 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    background: rgba(0,0,0,.96) !important;
+    backdrop-filter: blur(8px);
+  }
+
+  /* ---------- FINAL CONTACT WRAPPER ---------- */
+  main#site > .section-wrap[data-index="6"] {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Do NOT keep the Contact card sticky on mobile/tablet.
+     Sticky positioning was the main reason it could visually
+     run underneath the footer. */
+  main#site > .section-wrap[data-index="6"] > .contact-card {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+
+    width: calc(100% - 24px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    margin: 0 auto !important;
+
+    overflow: visible !important;
+    transform-origin: center top !important;
+
+    /* Enough breathing room INSIDE the card, not after it. */
+    padding: 30px 24px 38px !important;
+  }
+
+  /* Keep the Contact buttons inside the card. */
+  .contact-card .contact-links {
+    position: relative !important;
+    margin-top: 26px !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    z-index: 2 !important;
+  }
+
+  /* No artificial blank viewport after the Contact card. */
+  main#site > .section-wrap[data-index="6"]::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* Dots are desktop-only. */
+  .section-dots {
+    display: none !important;
+  }
+}
+
+/* ---------- PHONE-SPECIFIC ---------- */
+@media (max-width: 600px) {
+  main#site > .section-wrap[data-index="6"] > .contact-card {
+    width: calc(100% - 24px) !important;
+    padding: 28px 22px 34px !important;
+    border-radius: 28px !important;
+  }
+
+  .contact-card h2 {
+    margin-bottom: 18px !important;
+  }
+
+  .contact-card > p:not(.section-kicker) {
+    max-width: 100% !important;
+  }
+
+  .contact-card .contact-links {
+    gap: 10px !important;
+    margin-top: 24px !important;
+  }
+
+  .contact-card .button {
+    padding: 12px 16px !important;
+  }
+
+  .footer,
+  footer.footer {
+    height: 56px !important;
+    min-height: 56px !important;
+  }
+}
+
+/* Desktop keeps the cinematic fixed footer. */
+@media (min-width: 1025px) {
+  .footer,
+  footer.footer {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    top: auto !important;
+    z-index: 200 !important;
+  }
+}
+
+/* FINAL MOBILE GAP FIX:
+   The blank space before Contact comes from the previous section
+   retaining a viewport-sized wrapper. Let the Education wrapper end
+   immediately after its card instead of reserving another viewport. */
+@media (max-width: 1024px) {
+  main#site > .section-wrap[data-index="5"] {
+    min-height: 0 !important;
+    height: auto !important;
+    padding-bottom: 18px !important;
+    margin-bottom: 0 !important;
+  }
+
+  main#site > .section-wrap[data-index="5"] > .education-card {
+    margin-bottom: 0 !important;
+  }
+
+  main#site > .section-wrap[data-index="6"] {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  main#site > .section-wrap[data-index="5"] {
+    padding-bottom: 12px !important;
+  }
+}
+
+/* MOBILE CARD HEIGHT FIX
+   On iPhone-sized screens the cards must grow from their content instead
+   of inheriting a viewport height. This removes the large empty interiors. */
+/* V27 — compact mobile cards + restored cinematic section runway.
+   Card height is content-driven; the wrapper keeps a controlled runway
+   so the existing JS card-transition animation can still run smoothly. */
+@media (max-width: 600px) {
+  .section-wrap {
+    height: auto !important; /* script.js sets the exact runway after measuring content */
+    min-height: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .section-wrap > .card,
+  .card {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    position: sticky !important;
+  }
+
+  /* Do not reserve space for the portrait on phones. */
+  .about-photo {
+    display: none !important;
+  }
+
+  .section-wrap:last-of-type {
+    padding-bottom: 0 !important;
+  }
+}
+
+/* V27 — restore the subtle hero motion seen in the reference recording. */
+.hero-orbit .orbit {
+  animation: orbit-breathe 8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.hero-orbit .orbit-b {
+  animation: orbit-breathe-reverse 11s ease-in-out infinite;
+}
+
+.hero-orbit .core {
+  animation: core-pulse 5s ease-in-out infinite;
+}
+
+.hero-orbit .orbit-dot {
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  offset-path: ellipse(38% 38% at 50% 50%);
+  offset-rotate: 0deg;
+  animation: orbit-dot 13s linear infinite;
+  will-change: offset-distance;
+}
+
+.hero-orbit .dot-a {
+  offset-distance: 8%;
+}
+
+.hero-orbit .dot-b {
+  offset-distance: 58%;
+  animation-duration: 17s;
+  animation-direction: reverse;
+}
+
+@keyframes orbit-dot {
+  to { offset-distance: 108%; }
+}
+
+@keyframes orbit-breathe {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.015) rotate(2deg); }
+}
+
+@keyframes orbit-breathe-reverse {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(.985) rotate(-2deg); }
+}
+
+@keyframes core-pulse {
+  0%, 100% { transform: scale(1); opacity: .96; }
+  50% { transform: scale(1.025); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-orbit .orbit,
+  .hero-orbit .orbit-b,
+  .hero-orbit .core,
+  .hero-orbit .orbit-dot {
+    animation: none !important;
+  }
+}
+
+/* V28 — final mobile Contact/footer separation.
+   Contact is the last card: it must finish before the footer and must not
+   participate in the sticky card hand-off on phone screens. */
+@media (max-width: 600px) {
+  main#site > .section-wrap[data-index="6"] {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 0 12px !important;
+  }
+
+  main#site > .section-wrap[data-index="6"] > .contact-card {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: calc(100% - 24px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    padding-bottom: 30px !important;
+    overflow: visible !important;
+  }
+
+  main#site > .section-wrap[data-index="6"] .contact-links {
+    margin-bottom: 0 !important;
+  }
+
+  .footer,
+  footer.footer {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    margin-top: 0 !important;
+  }
+}
