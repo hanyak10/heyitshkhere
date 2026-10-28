@@ -1,4 +1,4 @@
-/* Lightweight Framer-Motion-style FadeIn: whileInView, once:true, margin:50px, amount:0. */
+﻿/* Lightweight Framer-Motion-style FadeIn: whileInView, once:true, margin:50px, amount:0. */
 const fadeItems = document.querySelectorAll('.fade-in');
 const fadeObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach((entry) => {
@@ -216,3 +216,159 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
 sizeMobileSectionRunways();
 computeTargets();
 renderFrame();
+
+
+/* =====================================================
+   THEME TOGGLE — light / dark
+===================================================== */
+(function () {
+  const html = document.documentElement;
+  const btn  = document.getElementById('theme-toggle');
+
+  // Restore saved preference
+  const saved = localStorage.getItem('hk-theme');
+  if (saved) html.setAttribute('data-theme', saved);
+
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('hk-theme', next);
+
+    // Pulse the button on click
+    btn.classList.add('theme-toggle--spin');
+    setTimeout(() => btn.classList.remove('theme-toggle--spin'), 400);
+  });
+})();
+
+
+/* =====================================================
+   CUSTOM CURSOR + TRAIL ANIMATION
+===================================================== */
+(function () {
+  // Only run on devices with a fine pointer (mouse / trackpad)
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  const dot   = document.getElementById('cursor-dot');
+  const ring  = document.getElementById('cursor-ring');
+  if (!dot || !ring) return;
+
+  let mouseX = 0, mouseY = 0;
+  let ringX  = 0, ringY  = 0;
+  let lastTrailX = 0, lastTrailY = 0;
+  let raf = 0;
+
+  // ── Move ──────────────────────────────────────────
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    // Position the dot instantly
+    dot.style.left = mouseX + 'px';
+    dot.style.top  = mouseY + 'px';
+
+    // Spawn a trail particle every ~18 px of movement
+    const dx   = mouseX - lastTrailX;
+    const dy   = mouseY - lastTrailY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist > 18) {
+      spawnTrail(mouseX, mouseY);
+      lastTrailX = mouseX;
+      lastTrailY = mouseY;
+    }
+
+    // Kick off ring lerp loop if not already running
+    if (!raf) raf = requestAnimationFrame(lerpRing);
+  });
+
+  // ── Ring lerps toward cursor ───────────────────────
+  function lerpRing () {
+    const speed = 0.13;
+    ringX += (mouseX - ringX) * speed;
+    ringY += (mouseY - ringY) * speed;
+
+    ring.style.left = ringX + 'px';
+    ring.style.top  = ringY + 'px';
+
+    const stillMoving =
+      Math.abs(mouseX - ringX) > 0.3 ||
+      Math.abs(mouseY - ringY) > 0.3;
+
+    raf = stillMoving ? requestAnimationFrame(lerpRing) : 0;
+  }
+
+  // ── Hover state ────────────────────────────────────
+  document.querySelectorAll('a, button, .project, .skill-cloud span, .education-block, .timeline-item').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cur-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cur-hover'));
+  });
+
+  // ── Click state ────────────────────────────────────
+  document.addEventListener('mousedown', () => document.body.classList.add('cur-click'));
+  document.addEventListener('mouseup',   () => document.body.classList.remove('cur-click'));
+
+  // ── Hide/show when leaving/entering window ─────────
+  document.addEventListener('mouseleave', () => {
+    dot.style.opacity  = '0';
+    ring.style.opacity = '0';
+  });
+  document.addEventListener('mouseenter', () => {
+    dot.style.opacity  = '';
+    ring.style.opacity = '';
+  });
+
+  // ── Trail particle factory ─────────────────────────
+  // Theme-aware palettes so particles stay visible on both
+  // the dark (#000) and light (#f2efe8) backgrounds.
+  const PALETTE = {
+    dark: [
+      'rgba(255,210,94,0.95)',
+      'rgba(217,174,79,0.8)',
+      'rgba(200,220,180,0.75)',
+      'rgba(255,255,255,0.7)',
+    ],
+    light: [
+      'rgba(138,100,16,0.9)',
+      'rgba(168,124,32,0.8)',
+      'rgba(110,130,70,0.75)',
+      'rgba(90,70,20,0.65)',
+    ],
+  };
+
+  const getColors = () =>
+    document.documentElement.getAttribute('data-theme') === 'light'
+      ? PALETTE.light
+      : PALETTE.dark;
+
+  function spawnTrail (x, y) {
+    const el = document.createElement('div');
+    el.className = 'cursor-trail';
+
+    // Random size 4–10 px (slightly larger for visibility)
+    const size = 4 + Math.random() * 6;
+    el.style.width  = size + 'px';
+    el.style.height = size + 'px';
+
+    // Random scatter direction
+    const angle  = Math.random() * Math.PI * 2;
+    const radius = 8 + Math.random() * 18;
+    el.style.setProperty('--trail-tx', (Math.cos(angle) * radius).toFixed(1) + 'px');
+    el.style.setProperty('--trail-ty', (Math.sin(angle) * radius).toFixed(1) + 'px');
+
+    // Random color from the active theme palette
+    const colors = getColors();
+    const color  = colors[Math.floor(Math.random() * colors.length)];
+    el.style.background = color;
+    el.style.boxShadow  = `0 0 7px ${color}`;
+
+    el.style.left = x + 'px';
+    el.style.top  = y + 'px';
+
+    document.body.appendChild(el);
+
+    // Self-remove after animation completes
+    el.addEventListener('animationend', () => el.remove(), { once: true });
+  }
+})();
